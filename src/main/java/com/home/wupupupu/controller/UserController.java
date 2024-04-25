@@ -10,12 +10,14 @@ import jakarta.validation.constraints.Pattern;
 import org.apache.ibatis.annotations.Param;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @Validated
@@ -23,6 +25,8 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
     @GetMapping("/register")
     public Result register(@Pattern(regexp = "^\\S{5,20}$") String username , @Pattern(regexp = "^\\S{6,32}$") String password){
         if (userService.findUserByName(username)==null){
@@ -46,6 +50,8 @@ public class UserController {
         claim.put("username",username);
         claim.put("id",user.getId());
         String token= JwtUtil.getToken(claim);
+        ValueOperations<String,String> operations= redisTemplate.opsForValue();
+        operations.set(token,token,1, TimeUnit.DAYS);
         return Result.success(token);
     }
     @PutMapping("/update")
@@ -61,8 +67,10 @@ public class UserController {
         return Result.success();
     }
     @PatchMapping("/updatePassword")
-    public Result updatePassword(@RequestBody Map<String,String> params){
+    public Result updatePassword(@RequestBody Map<String,String> params,@RequestHeader("Authorization") String token){
         userService.updatePassword(params);
+        ValueOperations<String,String> operations=redisTemplate.opsForValue();
+        operations.getOperations().delete(token);
         return Result.success();
     }
 }

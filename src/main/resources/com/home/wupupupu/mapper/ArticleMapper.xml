@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.home.wupupupu.mapper.ArticleMapper">
+    <select id="list" resultType="com.home.wupupupu.pojo.Article">
+        select id,title,content,state,cover_img as coverImg,
+                category_belongs as categoryBelongs,
+                create_user as createUser,
+                create_time as createTime,
+                update_time as updateTime
+        from article
+                 <where>
+                     <if test="categoryId!=null">
+                         category_id=#{categoryId}
+                     </if>
+                     <if test="state!=null">
+                         and state=#{state}
+                     </if>
+                     <if test="userId!=null">
+                        and create_user=#{userId}
+                     </if>
+                 </where>
+    </select>
+    <update id="updateArticle" >
+        update article set
+        <if test="title!=null">
+            title=#{title},
+        </if>
+        <if test="content!=null">
+            content=#{content},
+        </if>
+        <if test="coverImg!=null">
+            cover_img=#{coverImg},
+        </if>
+        update_time=#{updateTime}
+        where id=#{id}
+    </update>
+
+</mapper>

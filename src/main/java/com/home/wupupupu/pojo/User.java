@@ -5,9 +5,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.groups.Default;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDateTime;
 @Data
@@ -26,7 +28,9 @@ public class User {
     private String nickname;
     @Email
     private String email;
+    @URL(groups = upload.class)
     private String userPic;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
+    private interface upload extends Default {}
 }

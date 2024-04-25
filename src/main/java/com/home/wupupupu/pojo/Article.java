@@ -1,5 +1,7 @@
 package com.home.wupupupu.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.home.wupupupu.util.ArticleState;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,12 +20,14 @@ public class Article {
   private String content;
   @URL
   private String coverImg;
-
+  @ArticleState(groups = add.class)
   private String state;
-  @NotNull
+  @NotNull(groups = add.class)
   private Integer categoryBelongs;
   private Integer createUser;
+  @JsonFormat(pattern = "yyyy-MM-dd  HH:mm:ss")
   private java.sql.Timestamp createTime;
+  @JsonFormat(pattern = "yyyy-MM-dd  HH:mm:ss")
   private java.sql.Timestamp updateTime;
   public interface add extends Default {}
   public interface update extends Default{}
