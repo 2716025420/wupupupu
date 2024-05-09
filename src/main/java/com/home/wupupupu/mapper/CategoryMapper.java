@@ -12,7 +12,7 @@ public interface CategoryMapper {
             "values (#{categoryName},#{categoryAlias},now(),now(),#{id})")
     void addNewCategory(Category category);
 
-    @Select("select category_name as categoryName,category_alias as categoryAlias,create_user as createUser,create_time as createTime,update_time as updateTime" +
+    @Select("select id,category_name as categoryName,category_alias as categoryAlias,create_user as createUser,create_time as createTime,update_time as updateTime" +
             " from category where create_user=#{userid}")
     List<Category> findArticleCategoryByUserId(int userId);
     @Select("select id, category_name as categoryName,category_alias as categoryAlias,create_user as createUser,create_time as createTime,update_time as updateTime" +

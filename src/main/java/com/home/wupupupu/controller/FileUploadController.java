@@ -14,9 +14,9 @@ import java.io.InputStream;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("upload")
+
 public class FileUploadController {
-    @PostMapping("user")
+    @PostMapping("upload")
     public Result<String> userPic(MultipartFile file) throws Exception {
         String OriginalFilename= file.getOriginalFilename();
         String fileName= UUID.randomUUID()+OriginalFilename.substring(OriginalFilename.lastIndexOf("."));

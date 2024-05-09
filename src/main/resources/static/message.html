@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>
+    <button id="button" >
+        点位
+    </button>
+</p>
+<script type="module">
+    import med from "/static/showMessage.js"
+    document.getElementById("button").onclick=function () {
+        med.complexMessage('success')
+    }
+</script>
+</body>
+</html>

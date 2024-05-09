@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,7 +23,12 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token=request.getHeader("Authorization");
+
         try {
+            if(request.getMethod().equals(HttpMethod.OPTIONS.toString())){
+                response.setStatus(HttpStatus.NO_CONTENT.value());
+                return false;
+            }
             ValueOperations<String,String> operations=redisTemplate.opsForValue();
             String redisToken= operations.get(token);
             if (redisToken==null){

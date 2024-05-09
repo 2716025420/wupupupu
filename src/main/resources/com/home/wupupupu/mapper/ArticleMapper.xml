@@ -12,7 +12,7 @@
         from article
                  <where>
                      <if test="categoryId!=null">
-                         category_id=#{categoryId}
+                         category_belongs=#{categoryId}
                      </if>
                      <if test="state!=null">
                          and state=#{state}

@@ -6,6 +6,7 @@ import com.home.wupupupu.service.UserService;
 import com.home.wupupupu.util.JwtUtil;
 import com.home.wupupupu.util.MD5Util;
 import com.home.wupupupu.util.ThreadLocalUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.Pattern;
 import org.apache.ibatis.annotations.Param;
 import org.hibernate.validator.constraints.URL;
@@ -22,11 +23,19 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @Validated
 @RequestMapping("/user")
+//@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @GetMapping("/userInfo")
+    public Result userInfo( ){
+        Map<String,Object> map= ThreadLocalUtil.get();
+        String username=(String)map.get("username");
+        User user=userService.findUserByName(username);
+        return Result.success(user);
+    }
     @GetMapping("/register")
     public Result register(@Pattern(regexp = "^\\S{5,20}$") String username , @Pattern(regexp = "^\\S{6,32}$") String password){
         if (userService.findUserByName(username)==null){
@@ -38,8 +47,10 @@ public class UserController {
     }
     @GetMapping("/login")
     public Result login(@Pattern(regexp = "^\\S{5,20}$") String username , @Pattern(regexp = "^\\S{6,32}$") String password){
+
         User user=userService.findUserByName(username);
         password= MD5Util.getMd5(password);
+
         if (user==null){
             return Result.error("用户名不存在");
         }

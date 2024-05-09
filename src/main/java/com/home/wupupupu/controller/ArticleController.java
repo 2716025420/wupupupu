@@ -4,12 +4,15 @@ import com.home.wupupupu.pojo.Article;
 import com.home.wupupupu.pojo.PageBean;
 import com.home.wupupupu.pojo.Result;
 import com.home.wupupupu.service.ArticleService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/article")
+//@CrossOrigin
+
 public class ArticleController {
     @Autowired
     ArticleService articleService;
@@ -24,7 +27,9 @@ public class ArticleController {
                                           Integer pageSize,
                                           @RequestParam(required = false) String categoryId,
                                           @RequestParam(required = false) String state){
+
         PageBean pageBean=articleService.list(pageNum,pageSize,categoryId,state);
+
         return Result.success(pageBean);
     }
     @PutMapping("updateArticle")
