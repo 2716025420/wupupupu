@@ -36,7 +36,6 @@ public class LoginInterceptor implements HandlerInterceptor {
             }
             Map<String,Object> map= JwtUtil.parseToken(token);
             ThreadLocalUtil.set(map);
-
             return true;
         }catch (Exception e){
             response.setStatus(401);

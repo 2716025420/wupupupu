@@ -60,6 +60,9 @@ public class testMain {
         Article article=new Article();
         article.setCreateTime(Timestamp.valueOf(LocalDateTime.now()));
         System.out.println(article.getCreateTime());
+
     }
+
+
 
 }

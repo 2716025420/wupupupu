@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.URL;
 public class Article {
   @NotNull(groups = update.class)
   private long id;
-  @Pattern(regexp = "^\\S{1,10}$")
+  @Pattern(regexp = "^\\S{1,30}$")
   @NotBlank(groups = add.class)
   private String title;
   private String content;

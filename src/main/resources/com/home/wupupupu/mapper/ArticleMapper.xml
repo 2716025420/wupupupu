@@ -33,7 +33,11 @@
         <if test="coverImg!=null">
             cover_img=#{coverImg},
         </if>
+        <if test="categoryBelongs!=null">
+            category_belongs=#{categoryBelongs},
+        </if>
         update_time=#{updateTime}
+
         where id=#{id}
     </update>
 
